@@ -1,0 +1,38 @@
+plugins {
+    id 'java-library'
+    id 'groovy'
+}
+
+group 'dev.caladh.util'
+version '0.1.0'
+description 'Functional validation utils'
+
+java {
+    def version = JavaVersion.VERSION_14
+    sourceCompatibility = version
+    targetCompatibility = version
+    modularity.inferModulePath = true
+}
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+    jcenter()
+}
+
+dependencies {
+    testImplementation 'org.codehaus.groovy:groovy:3.0.2'
+    testImplementation('org.spockframework:spock-core:2.0-M2-groovy-3.0') {
+        exclude group: 'org.codehaus.groovy'
+        exclude group: 'junit'
+        exclude group: 'org.hamcrest'
+    }
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.2'
+    testRuntimeOnly('org.junit.vintage:junit-vintage-engine:5.6.2') {
+        exclude group: 'org.hamcrest'
+    }
+}
+
+test {
+    useJUnitPlatform()
+}
