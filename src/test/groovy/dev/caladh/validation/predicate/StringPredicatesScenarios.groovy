@@ -97,6 +97,123 @@ class StringPredicatesScenarios extends Specification {
           ' '    | 'B'   || false
     }
 
+    def 'Text "#sample" "Equals to" #text is #result'() {
+        expect:
+          StringPredicates.equalsTo(text).test(sample) == result
+
+        where:
+          sample | text  || result
+          'Abc'  | 'Abc' || true
+          'Abc'  | 'ABC' || false
+    }
+
+    def 'Text "#sample" "Equals to ignoring case" #text is #result'() {
+        expect:
+          StringPredicates.equalsToIgnoringCase(text).test(sample) == result
+
+        where:
+          sample | text  || result
+          'Abc'  | 'abc' || true
+          'ABC'  | 'abc' || true
+          'Xyz'  | 'abc' || false
+    }
+
+    def 'Text "#sample" "Starts with" #text is #result'() {
+        expect:
+          StringPredicates.startsWith(text).test(sample) == result
+
+        where:
+          sample | text || result
+          'Abc'  | 'Ab' || true
+          'Abc'  | ''   || true
+          'Abc'  | 'AB' || false
+    }
+
+    def 'Text "#sample" "Starts with ignoring case" #text is #result'() {
+        expect:
+          StringPredicates.startsWithIgnoringCase(text).test(sample) == result
+
+        where:
+          sample | text || result
+          'Abc'  | 'Ab' || true
+          'ABC'  | 'Ab' || true
+          'ABC'  | ''   || true
+          'Xyz'  | 'Ab' || false
+    }
+
+    def 'Text "#sample" "Ends with" #text is #result'() {
+        expect:
+          StringPredicates.endsWith(text).test(sample) == result
+
+        where:
+          sample | text || result
+          'Abc'  | 'bc' || true
+          'Abc'  | ''   || true
+          'Abc'  | 'BC' || false
+    }
+
+    def 'Text "#sample" "Ends with ignoring case" #text is #result'() {
+        expect:
+          StringPredicates.endsWithIgnoringCase(text).test(sample) == result
+
+        where:
+          sample | text || result
+          'Abc'  | 'bc' || true
+          'ABC'  | 'bc' || true
+          'ABC'  | ''   || true
+          'Xyz'  | 'bc' || false
+    }
+
+    def 'Text "#sample" "Is number" is #result'() {
+        expect:
+          StringPredicates.isNumber().test(sample) == result
+
+        where:
+          sample || result
+          '123'  || true
+          'Abc'  || false
+    }
+
+    def 'Text "#sample" "Has length" #length is #result'() {
+        expect:
+          StringPredicates.hasLength(length).test(sample) == result
+
+        where:
+          sample | length || result
+          'Abc'  | 3      || true
+          'Abc'  | 2      || false
+    }
+
+    def 'Text "#sample" "Is shorter than" #length is #result'() {
+        expect:
+          StringPredicates.isShorterThan(length).test(sample) == result
+
+        where:
+          sample | length || result
+          'Abc'  | 4      || true
+          'Abc'  | 3      || false
+    }
+
+    def 'Text "#sample" "Is longer than" #length is #result'() {
+        expect:
+          StringPredicates.isLongerThan(length).test(sample) == result
+
+        where:
+          sample | length || result
+          'Abc'  | 2      || true
+          'Abc'  | 3      || false
+    }
+
+    def 'Text "#sample" "Has length between" #min and #max is #result'() {
+        expect:
+          StringPredicates.hasLengthBetween(min, max).test(sample) == result
+
+        where:
+          sample | min | max || result
+          'Abc'  | 2   | 4   || true
+          'Abc'  | 2   | 3   || false
+    }
+
     def 'Text "#sample" "Is not blank" and "Contains #chars" is #result'() {
         given:
           def predicate = StringPredicates.isNotBlank().and StringPredicates.contains(chars)

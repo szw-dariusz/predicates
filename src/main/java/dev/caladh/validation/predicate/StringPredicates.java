@@ -1,6 +1,7 @@
 package dev.caladh.validation.predicate;
 
 import java.util.Objects;
+import java.util.function.IntPredicate;
 import java.util.function.Predicate;
 import java.util.regex.Pattern;
 
@@ -45,5 +46,84 @@ public final class StringPredicates {
     public static Predicate<String> contains(final CharSequence cs) {
         Objects.requireNonNull(cs);
         return s -> s.contains(cs);
+    }
+
+    public static Predicate<String> equalsTo(final String text) {
+        return equalsTo(text, false);
+    }
+
+    public static Predicate<String> equalsToIgnoringCase(final String text) {
+        return equalsTo(text, true);
+    }
+
+    public static Predicate<String> equalsTo(final String text, final boolean ignoreCase) {
+        Objects.requireNonNull(text);
+        if (ignoreCase) {
+            return text::equalsIgnoreCase;
+        }
+        return text::equals;
+    }
+
+    public static Predicate<String> startsWith(final String text) {
+         return startsWith(text, false);
+    }
+
+     public static Predicate<String> startsWithIgnoringCase(final String text) {
+         return startsWith(text, true);
+    }
+
+     public static Predicate<String> startsWith(final String text, final boolean ignoreCase) {
+        Objects.requireNonNull(text);
+        if (ignoreCase) {
+            return s -> s.regionMatches(true, 0, text, 0, text.length());
+        }
+        return s -> s.startsWith(text);
+    }
+
+    public static Predicate<String> endsWith(final String text) {
+        return endsWith(text, false);
+    }
+
+    public static Predicate<String> endsWithIgnoringCase(final String text) {
+        return endsWith(text, true);
+    }
+
+    public static Predicate<String> endsWith(final String text, final boolean ignoreCase) {
+        Objects.requireNonNull(text);
+        if (ignoreCase) {
+            return s -> s.regionMatches(true, s.length() - text.length(), text, 0, text.length());
+        }
+        return s -> s.endsWith(text);
+    }
+
+    public static Predicate<String> isNumber() {
+        return s -> {
+            try {
+                Integer.parseInt(s);
+                return true;
+            } catch (NumberFormatException e) {
+                return false;
+            }
+        };
+    }
+
+    public static Predicate<String> hasLength(final int length) {
+        IntPredicate equalTo = IntegerPredicates.isEqualTo(length);
+        return s -> equalTo.test(s.length());
+    }
+
+    public static Predicate<String> isShorterThan(final int max) {
+        IntPredicate smallerThan = IntegerPredicates.isSmallerThan(max);
+        return s -> smallerThan.test(s.length());
+    }
+
+    public static Predicate<String> isLongerThan(final int min) {
+        IntPredicate greaterThan = IntegerPredicates.isGreaterThan(min);
+        return s -> greaterThan.test(s.length());
+    }
+
+    public static Predicate<String> hasLengthBetween(final int min, final int max) {
+        IntPredicate between = IntegerPredicates.isBetween(min, max);
+        return s -> between.test(s.length());
     }
 }
