@@ -2,7 +2,6 @@ package dev.caladh.validation.predicate;
 
 import java.util.Collection;
 import java.util.Objects;
-import java.util.function.IntPredicate;
 import java.util.function.Predicate;
 
 /**
@@ -29,7 +28,7 @@ public final class CollectionPredicates {
         if (min == 0) {
             return isNotEmpty();
         }
-        IntPredicate greaterThan = IntegerPredicates.isGreaterThan(min);
+        var greaterThan = IntegerPredicates.isGreaterThan(min);
         return c -> greaterThan.test(c.size());
     }
 
@@ -37,7 +36,7 @@ public final class CollectionPredicates {
         if (max == 1) {
             return isEmpty();
         }
-        IntPredicate smallerThan = IntegerPredicates.isSmallerThan(max);
+        var smallerThan = IntegerPredicates.isSmallerThan(max);
         return c -> smallerThan.test(c.size());
     }
 

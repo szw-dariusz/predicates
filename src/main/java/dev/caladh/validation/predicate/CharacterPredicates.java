@@ -24,7 +24,7 @@ public final class CharacterPredicates {
 
     public static Predicate<Character> equalsTo(final char character, final boolean ignoreCase) {
         if (ignoreCase) {
-            char normalizedChar = Character.toLowerCase(character);
+            var normalizedChar = Character.toLowerCase(character);
             return c -> Character.toLowerCase(c) == normalizedChar;
         }
         return c -> c == character;

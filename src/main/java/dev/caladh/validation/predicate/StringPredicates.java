@@ -1,7 +1,6 @@
 package dev.caladh.validation.predicate;
 
 import java.util.Objects;
-import java.util.function.IntPredicate;
 import java.util.function.Predicate;
 import java.util.regex.Pattern;
 
@@ -62,7 +61,7 @@ public final class StringPredicates {
             return isEmpty();
         }
         if (hasLength(1).test(text)) {
-            Predicate<Character> equalsTo = CharacterPredicates.equalsTo(text.charAt(0), ignoreCase);
+            var equalsTo = CharacterPredicates.equalsTo(text.charAt(0), ignoreCase);
             return hasLength(1).and(s -> equalsTo.test(s.charAt(0)));
         }
         if (ignoreCase) {
@@ -85,7 +84,7 @@ public final class StringPredicates {
             return s -> true;
         }
         if (hasLength(1).test(text)) {
-            Predicate<Character> equalsTo = CharacterPredicates.equalsTo(text.charAt(0), ignoreCase);
+            var equalsTo = CharacterPredicates.equalsTo(text.charAt(0), ignoreCase);
             return isNotEmpty().and(s -> equalsTo.test(s.charAt(0)));
         }
         if (ignoreCase) {
@@ -108,7 +107,7 @@ public final class StringPredicates {
             return s -> true;
         }
         if (hasLength(1).test(text)) {
-            Predicate<Character> equalsTo = CharacterPredicates.equalsTo(text.charAt(0), ignoreCase);
+            var equalsTo = CharacterPredicates.equalsTo(text.charAt(0), ignoreCase);
             return isNotEmpty().and(s -> equalsTo.test(s.charAt(s.length() - 1)));
         }
         if (ignoreCase) {
@@ -132,7 +131,7 @@ public final class StringPredicates {
         if (length == 0) {
             return isEmpty();
         }
-        IntPredicate equalTo = IntegerPredicates.isEqualTo(length);
+        var equalTo = IntegerPredicates.isEqualTo(length);
         return s -> equalTo.test(s.length());
     }
 
@@ -147,7 +146,7 @@ public final class StringPredicates {
         if (min == 0) {
             return isNotEmpty();
         }
-        IntPredicate greaterThan = IntegerPredicates.isGreaterThan(min);
+        var greaterThan = IntegerPredicates.isGreaterThan(min);
         return s -> greaterThan.test(s.length());
     }
 
@@ -155,7 +154,7 @@ public final class StringPredicates {
         if (max == 1) {
             return isEmpty();
         }
-        IntPredicate smallerThan = IntegerPredicates.isSmallerThan(max);
+        var smallerThan = IntegerPredicates.isSmallerThan(max);
         return s -> smallerThan.test(s.length());
     }
 }
