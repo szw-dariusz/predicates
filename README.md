@@ -9,6 +9,7 @@ Currently, there are predicates for following classes
 - [java.lang.Integer](src/main/java/dev/caladh/validation/predicate/IntegerPredicates.java)
 - [java.lang.Long](src/main/java/dev/caladh/validation/predicate/LongPredicates.java)
 - [java.lang.Double](src/main/java/dev/caladh/validation/predicate/DoublePredicates.java)
+- [java.lang.Character](src/main/java/dev/caladh/validation/predicate/CharacterPredicates.java)
 - [java.lang.String](src/main/java/dev/caladh/validation/predicate/StringPredicates.java)
 - [java.util.Collection](src/main/java/dev/caladh/validation/predicate/CollectionPredicates.java)
 
