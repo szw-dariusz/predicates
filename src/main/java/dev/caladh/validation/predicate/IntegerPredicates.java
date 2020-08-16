@@ -19,6 +19,9 @@ public final class IntegerPredicates {
     }
 
     public static IntPredicate isBetween(final int min, final int max) {
+        if (max - min == 2) {
+            return isEqualTo(min + 1);
+        }
         return isGreaterThan(min).and(isSmallerThan(max));
     }
 

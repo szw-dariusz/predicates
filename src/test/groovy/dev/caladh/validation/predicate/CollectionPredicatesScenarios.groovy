@@ -33,6 +33,7 @@ class CollectionPredicatesScenarios extends Specification {
         where:
           sample | min || result
           [1, 2] | 1   || true
+          [1, 2] | 0   || true
           [1, 2] | 2   || false
     }
 
@@ -43,6 +44,7 @@ class CollectionPredicatesScenarios extends Specification {
         where:
           sample | max || result
           [1, 2] | 3   || true
+          []     | 1   || true
           [1, 2] | 2   || false
     }
 

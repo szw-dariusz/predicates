@@ -22,6 +22,7 @@ class LongPredicatesScenarios extends Specification {
 
         where:
           a | min | max || result
+          2 | 1   | 4   || true
           2 | 1   | 3   || true
           2 | 1   | 1   || false
     }

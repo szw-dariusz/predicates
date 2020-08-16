@@ -58,6 +58,13 @@ public final class StringPredicates {
 
     public static Predicate<String> equalsTo(final String text, final boolean ignoreCase) {
         Objects.requireNonNull(text);
+        if (isEmpty().test(text)) {
+            return isEmpty();
+        }
+        if (hasLength(1).test(text)) {
+            Predicate<Character> equalsTo = CharacterPredicates.equalsTo(text.charAt(0), ignoreCase);
+            return hasLength(1).and(s -> equalsTo.test(s.charAt(0)));
+        }
         if (ignoreCase) {
             return text::equalsIgnoreCase;
         }
@@ -65,15 +72,22 @@ public final class StringPredicates {
     }
 
     public static Predicate<String> startsWith(final String text) {
-         return startsWith(text, false);
+        return startsWith(text, false);
     }
 
-     public static Predicate<String> startsWithIgnoringCase(final String text) {
-         return startsWith(text, true);
+    public static Predicate<String> startsWithIgnoringCase(final String text) {
+        return startsWith(text, true);
     }
 
-     public static Predicate<String> startsWith(final String text, final boolean ignoreCase) {
+    public static Predicate<String> startsWith(final String text, final boolean ignoreCase) {
         Objects.requireNonNull(text);
+        if (isEmpty().test(text)) {
+            return s -> true;
+        }
+        if (hasLength(1).test(text)) {
+            Predicate<Character> equalsTo = CharacterPredicates.equalsTo(text.charAt(0), ignoreCase);
+            return isNotEmpty().and(s -> equalsTo.test(s.charAt(0)));
+        }
         if (ignoreCase) {
             return s -> s.regionMatches(true, 0, text, 0, text.length());
         }
@@ -90,6 +104,13 @@ public final class StringPredicates {
 
     public static Predicate<String> endsWith(final String text, final boolean ignoreCase) {
         Objects.requireNonNull(text);
+        if (isEmpty().test(text)) {
+            return s -> true;
+        }
+        if (hasLength(1).test(text)) {
+            Predicate<Character> equalsTo = CharacterPredicates.equalsTo(text.charAt(0), ignoreCase);
+            return isNotEmpty().and(s -> equalsTo.test(s.charAt(s.length() - 1)));
+        }
         if (ignoreCase) {
             return s -> s.regionMatches(true, s.length() - text.length(), text, 0, text.length());
         }
@@ -108,22 +129,33 @@ public final class StringPredicates {
     }
 
     public static Predicate<String> hasLength(final int length) {
+        if (length == 0) {
+            return isEmpty();
+        }
         IntPredicate equalTo = IntegerPredicates.isEqualTo(length);
         return s -> equalTo.test(s.length());
     }
 
-    public static Predicate<String> isShorterThan(final int max) {
-        IntPredicate smallerThan = IntegerPredicates.isSmallerThan(max);
-        return s -> smallerThan.test(s.length());
+    public static Predicate<String> hasLengthBetween(final int min, final int max) {
+        if (max - min == 2) {
+            return hasLength(min + 1);
+        }
+        return isLongerThan(min).and(isShorterThan(max));
     }
 
     public static Predicate<String> isLongerThan(final int min) {
+        if (min == 0) {
+            return isNotEmpty();
+        }
         IntPredicate greaterThan = IntegerPredicates.isGreaterThan(min);
         return s -> greaterThan.test(s.length());
     }
 
-    public static Predicate<String> hasLengthBetween(final int min, final int max) {
-        IntPredicate between = IntegerPredicates.isBetween(min, max);
-        return s -> between.test(s.length());
+    public static Predicate<String> isShorterThan(final int max) {
+        if (max == 1) {
+            return isEmpty();
+        }
+        IntPredicate smallerThan = IntegerPredicates.isSmallerThan(max);
+        return s -> smallerThan.test(s.length());
     }
 }

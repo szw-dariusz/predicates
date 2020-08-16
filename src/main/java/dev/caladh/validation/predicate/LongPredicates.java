@@ -19,6 +19,9 @@ public final class LongPredicates {
     }
 
     public static LongPredicate isBetween(final long min, final long max) {
+        if (max - min == 2) {
+            return isEqualTo(min + 1);
+        }
         return isGreaterThan(min).and(isSmallerThan(max));
     }
 

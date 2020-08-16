@@ -26,11 +26,17 @@ public final class CollectionPredicates {
     }
 
     public static <T extends Collection<?>> Predicate<T> hasMoreElementsThan(final int min) {
+        if (min == 0) {
+            return isNotEmpty();
+        }
         IntPredicate greaterThan = IntegerPredicates.isGreaterThan(min);
         return c -> greaterThan.test(c.size());
     }
 
     public static <T extends Collection<?>> Predicate<T> hasFewerElementsThan(final int max) {
+        if (max == 1) {
+            return isEmpty();
+        }
         IntPredicate smallerThan = IntegerPredicates.isSmallerThan(max);
         return c -> smallerThan.test(c.size());
     }

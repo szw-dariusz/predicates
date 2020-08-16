@@ -104,6 +104,8 @@ class StringPredicatesScenarios extends Specification {
         where:
           sample | text  || result
           'Abc'  | 'Abc' || true
+          ''     | ''    || true
+          'A'    | 'A'   || true
           'Abc'  | 'ABC' || false
     }
 
@@ -125,6 +127,7 @@ class StringPredicatesScenarios extends Specification {
         where:
           sample | text || result
           'Abc'  | 'Ab' || true
+          'Abc'  | 'A'  || true
           'Abc'  | ''   || true
           'Abc'  | 'AB' || false
     }
@@ -148,6 +151,7 @@ class StringPredicatesScenarios extends Specification {
         where:
           sample | text || result
           'Abc'  | 'bc' || true
+          'Abc'  | 'c'  || true
           'Abc'  | ''   || true
           'Abc'  | 'BC' || false
     }
@@ -181,17 +185,19 @@ class StringPredicatesScenarios extends Specification {
         where:
           sample | length || result
           'Abc'  | 3      || true
+          ''     | 0      || true
           'Abc'  | 2      || false
     }
 
-    def 'Text "#sample" "Is shorter than" #length is #result'() {
+    def 'Text "#sample" "Has length between" #min and #max is #result'() {
         expect:
-          StringPredicates.isShorterThan(length).test(sample) == result
+          StringPredicates.hasLengthBetween(min, max).test(sample) == result
 
         where:
-          sample | length || result
-          'Abc'  | 4      || true
-          'Abc'  | 3      || false
+          sample | min | max || result
+          'Abc'  | 2   | 5   || true
+          'Abc'  | 2   | 4   || true
+          'Abc'  | 2   | 3   || false
     }
 
     def 'Text "#sample" "Is longer than" #length is #result'() {
@@ -201,17 +207,19 @@ class StringPredicatesScenarios extends Specification {
         where:
           sample | length || result
           'Abc'  | 2      || true
+          'Abc'  | 0      || true
           'Abc'  | 3      || false
     }
 
-    def 'Text "#sample" "Has length between" #min and #max is #result'() {
+    def 'Text "#sample" "Is shorter than" #length is #result'() {
         expect:
-          StringPredicates.hasLengthBetween(min, max).test(sample) == result
+          StringPredicates.isShorterThan(length).test(sample) == result
 
         where:
-          sample | min | max || result
-          'Abc'  | 2   | 4   || true
-          'Abc'  | 2   | 3   || false
+          sample | length || result
+          'Abc'  | 4      || true
+          ''     | 1      || true
+          'Abc'  | 3      || false
     }
 
     def 'Text "#sample" "Is not blank" and "Contains #chars" is #result'() {
