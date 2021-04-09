@@ -11,7 +11,7 @@ java {
     def version = JavaVersion.VERSION_14
     sourceCompatibility = version
     targetCompatibility = version
-    modularity.inferModulePath = true
+    modularity.inferModulePath = false
 }
 
 repositories {
@@ -31,6 +31,9 @@ dependencies {
     testRuntimeOnly('org.junit.vintage:junit-vintage-engine:5.6.2') {
         exclude group: 'org.hamcrest'
     }
+    testImplementation('org.openjdk.jmh:jmh-core:1.25')
+    testAnnotationProcessor('org.openjdk.jmh:jmh-generator-annprocess:1.25')
+    testRuntimeOnly('org.junit.jupiter:junit-jupiter-engine:5.6.2')
 }
 
 test {
